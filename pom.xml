@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.jenkins-ci.plugins</groupId>
 		<artifactId>plugin</artifactId>
-		<version>1.445</version>
+		<version>1.610</version>
 	</parent>
 
 	<artifactId>twitter</artifactId>
@@ -72,24 +72,24 @@
 		<url>https://github.com/jenkinsci/twitter-plugin</url>
 	</scm>
 
-  <repositories>
-    <repository>
-      <id>repo.jenkins-ci.org</id>
-      <name>Jenkins Repository</name>
-      <url>http://repo.jenkins-ci.org/public/</url>
-    </repository>
-    <repository>
-      <id>twitter4j.org</id>
-      <name>twitter4j.org Repository</name>
-      <url>http://twitter4j.org/maven2</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
+	<repositories>
+		<repository>
+			<id>repo.jenkins-ci.org</id>
+			<name>Jenkins Repository</name>
+			<url>http://repo.jenkins-ci.org/public/</url>
+		</repository>
+		<repository>
+			<id>twitter4j.org</id>
+			<name>twitter4j.org Repository</name>
+			<url>http://twitter4j.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
 	<pluginRepositories>
 		<pluginRepository>
@@ -97,5 +97,4 @@
 			<url>http://repo.jenkins-ci.org/public/</url>
 		</pluginRepository>
 	</pluginRepositories>
-</project>  
-
+</project>
