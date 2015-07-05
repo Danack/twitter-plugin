@@ -16,7 +16,7 @@ import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Notifier;
 import hudson.tasks.Publisher;
-import hudson.tasks.Mailer;
+import jenkins.model.JenkinsLocationConfiguration;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -177,7 +177,7 @@ public class TwitterPublisher extends Notifier {
       onlyOnFailureOrRecovery = false;
 
       req.bindParameters(this, "twitter.");
-      hudsonUrl = Mailer.descriptor().getUrl();
+      hudsonUrl = new JenkinsLocationConfiguration().getUrl();
 
       save();
       return super.configure(req, formData);
