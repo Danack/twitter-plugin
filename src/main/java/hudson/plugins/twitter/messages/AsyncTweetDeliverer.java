@@ -57,6 +57,42 @@ public class AsyncTweetDeliverer implements TweetDeliverer {
     
     twitter.updateStatus(tweet);
   }
+
+  public void sendDirectMessage(String screenName, String message) {
+
+    AsyncTwitterFactory factory = new AsyncTwitterFactory();
+    AsyncTwitter twitter = factory.getInstance(new OAuthAuthorization(
+        new ConfigurationBuilder()
+            .setOAuthConsumerKey(TwitterConstants.CONSUMER_KEY)
+            .setOAuthConsumerSecret(TwitterConstants.CONSUMER_SECRET)
+            .setOAuthAccessToken(token)
+            .setOAuthAccessTokenSecret(tokenSecret)
+            .build()
+        )
+    );
+    twitter.addListener(new TwitterAdapter() {
+      @Override
+      public void onException(TwitterException e, TwitterMethod method) {
+        LOGGER.warning("Exception sending Twitter DM: " + e.toString());
+      }
+
+      // @Override
+      // public void updatedStatus(Status statuses) {
+        // LOGGER.info("Sent Twitter DM: " + statuses.getText());
+      // }
+
+//       DirectMessage directMessage = twitter.sendDirectMessage(userId, text);
+//                 for (TwitterListener listener : listeners) {
+//                     try {
+//                         listener.sentDirectMessage(directMessage);   
+    });
+    
+    if (customListener != null) {
+      twitter.addListener(customListener);
+    }
+    twitter.sendDirectMessage("MrDanack", message);
+  }
+  
   
   protected void setCustomListener(TwitterListener customListener) {
     this.customListener = customListener;

@@ -15,5 +15,14 @@
           <f:option selected="${instance.includeUrl==false}">No</f:option>
         </select>
     </f:entry>
+    
+    <f:entry title="Send as DM?" help="/plugin/twitter/help-project-senddm.html">
+      <select class="setting-input validated" name="twitter.sendDm">
+          <option>(System Default)</option>
+          <f:option selected="${instance.sendDm==true}">Yes</f:option>
+          <f:option selected="${instance.sendDm==false}">No</f:option>
+        </select>
+    </f:entry>
+    
   </f:advanced>
 </j:jelly>

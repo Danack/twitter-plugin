@@ -33,15 +33,15 @@ public class AsyncTweetDelivererTest {
     deliverer.setCustomListener(listener);
   }
   
-  @Test
-  public void testDelivery() {
-    deliverer.deliverTweet(tweet);
-    try {
-      Thread.sleep(2000);
-    } catch (InterruptedException e) {}
-    assertTrue(listener.wasSet);
-    assertEquals(tweet, listener.message);
-  }
+//  @Test
+//   public void testDelivery() {
+//     deliverer.deliverTweet(tweet);
+//     try {
+//       Thread.sleep(2000);
+//     } catch (InterruptedException e) {}
+//     assertTrue(listener.wasSet);
+//     assertEquals(tweet, listener.message);
+//   }
   
   /**
    * A custom listener that records that the tweet was sent and then removes it.

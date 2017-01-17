@@ -18,5 +18,10 @@
 		<f:entry title="Include the Build URL in the Tweet?" help="/plugin/twitter/help-global-url.html">
 		    <f:checkbox name="twitter.includeUrl" checked="${descriptor.includeUrl}" />
 		</f:entry>
+		
+		<f:entry title="Send DM?" help="/plugin/twitter/help-global-senddm.html">
+		    <f:checkbox name="twitter.sendDm" checked="${descriptor.sendDm}" />
+		</f:entry>
+		
 	</f:section>
 </j:jelly>

@@ -9,7 +9,8 @@ import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.plugins.twitter.messages.AsyncTweetDeliverer;
 import hudson.plugins.twitter.messages.DefaultTweetBuilder;
-import hudson.plugins.twitter.messages.TinyUrlLinkGenerator;
+// import hudson.plugins.twitter.messages.TinyUrlLinkGenerator;
+import hudson.plugins.twitter.messages.StandardLinkGenerator;
 import hudson.plugins.twitter.messages.TweetBuilder;
 import hudson.plugins.twitter.messages.TweetDeliverer;
 import hudson.tasks.BuildStepDescriptor;
@@ -38,11 +39,13 @@ public class TwitterPublisher extends Notifier {
 
   private Boolean onlyOnFailureOrRecovery;
   private Boolean includeUrl;
+  private Boolean sendDm;
 
   @DataBoundConstructor
-  public TwitterPublisher(String onlyOnFailureOrRecovery, String includeUrl) {
+  public TwitterPublisher(String onlyOnFailureOrRecovery, String includeUrl, String sendDm) {
     this.onlyOnFailureOrRecovery = cleanToBoolean(onlyOnFailureOrRecovery);
     this.includeUrl = cleanToBoolean(includeUrl);
+    this.sendDm = cleanToBoolean(sendDm);
   }
   
   @Override
@@ -65,11 +68,23 @@ public class TwitterPublisher extends Notifier {
   private void updateTwit(String message, String token, String tokenSecret) 
       throws Exception {
     TweetDeliverer deliverer = new AsyncTweetDeliverer(token, tokenSecret);
-    deliverer.deliverTweet(message);
+    
+    LOGGER.log(Level.SEVERE, "onlyOnFailureOrRecovery value is " + this.onlyOnFailureOrRecovery);
+    LOGGER.log(Level.SEVERE, "includeUrl value is " + this.includeUrl);
+    LOGGER.log(Level.SEVERE, "sendDM value is " + this.sendDm);
+
+    // the values are stord in the DescriptorImpl, not in this class.
+    boolean sendDmValue = shouldSendDm();
+
+    if (sendDmValue) {
+      deliverer.sendDirectMessage("MrDanack", message);
+    } else {
+      deliverer.deliverTweet(message);
+    }
   }
   
   protected TweetBuilder getTweetBuilder() {
-    return new DefaultTweetBuilder(new TinyUrlLinkGenerator());
+    return new DefaultTweetBuilder(new StandardLinkGenerator());
   }
 
   /**
@@ -112,6 +127,10 @@ public class TwitterPublisher extends Notifier {
     return onlyOnFailureOrRecovery;
   }
 
+  public Boolean getSendDm() {
+    return sendDm;
+  }
+
   public BuildStepMonitor getRequiredMonitorService() {
     return BuildStepMonitor.BUILD;
   }
@@ -142,6 +161,16 @@ public class TwitterPublisher extends Notifier {
     }
   }
 
+
+
+  protected boolean shouldSendDm() {
+    if (sendDm != null) {
+      return sendDm.booleanValue();
+    } else {
+      return ((DescriptorImpl) getDescriptor()).sendDm;
+    }
+  }
+
   protected boolean shouldIncludeUrl() {
     if (includeUrl != null) {
       return includeUrl.booleanValue();
@@ -163,6 +192,7 @@ public class TwitterPublisher extends Notifier {
     public String hudsonUrl;
     public boolean onlyOnFailureOrRecovery;
     public boolean includeUrl;
+    public boolean sendDm;
 
     public DescriptorImpl() {
       super(TwitterPublisher.class);
@@ -175,6 +205,7 @@ public class TwitterPublisher extends Notifier {
       // set the booleans to false as defaults
       includeUrl = false;
       onlyOnFailureOrRecovery = false;
+      sendDm = false;
 
       req.bindParameters(this, "twitter.");
       hudsonUrl = new JenkinsLocationConfiguration().getUrl();
@@ -206,6 +237,10 @@ public class TwitterPublisher extends Notifier {
 
     public boolean isOnlyOnFailureOrRecovery() {
       return onlyOnFailureOrRecovery;
+    }
+
+    public boolean isSendDm() {
+      return sendDm;
     }
 
     @Override
